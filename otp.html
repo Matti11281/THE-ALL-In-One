@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="generate.css">
+</head>
+
+<body>
+
+<section id="otpSection" 
+style="display:flex;
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.6);
+backdrop-filter:blur(8px);
+z-index:999;
+align-items:center;
+justify-content:center;
+">
+
+  <div class="container" id="otpContainer">
+    <h1 class="title">Enter 5 Digit OTP</h1>
+
+    <form id="otp-form">
+      <input type="text" class="otp-input" maxlength="1">
+      <input type="text" class="otp-input" maxlength="1">
+      <input type="text" class="otp-input" maxlength="1">
+      <input type="text" class="otp-input" maxlength="1">
+      <input type="text" class="otp-input" maxlength="1">
+    </form>
+
+    <button type="button" id="verify-btn">Verify OTP</button>
+  </div>
+
+</section>
+
+<script src="ootp.js"></script>
+
+</body>
+</html>

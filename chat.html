@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Advanced AI Chatbot</title>
+<link rel="stylesheet" href="bot.css">
+</head>
+<body class="chatbot-page">
+
+<div class="chat-shell">
+    <div class="chat-container">
+        <div class="sidebar">
+            <div class="sidebar-top">
+                <div class="bot-brand">
+                    <span class="brand-icon">🤖</span>
+                    <div>
+                        <h2>Hexa Core Chat</h2>
+                        <p>Smart assistant</p>
+                    </div>
+                </div>
+
+                <button class="side-btn primary-btn" onclick="newChat()">+ New Chat</button>
+                <button class="side-btn" onclick="clearHistory()">🗑 Clear History</button>
+                <button class="side-btn export-btn" onclick="downloadCVLog()">📄 Download Questions CV</button>
+            </div>
+
+            <div class="history-wrap">
+                <p class="history-title">Recent prompts</p>
+                <div class="history" id="history"></div>
+            </div>
+        </div>
+
+        <div class="chat-app">
+            <div class="header">
+                <div>
+                    <h1>🤖 Smart AI Bot</h1>
+                    <p>Ask about Hexa Core, your app, or anything else.</p>
+                </div>
+                <span class="status-pill">● Online</span>
+            </div>
+
+            <div id="chatbox"></div>
+
+            <div class="typing" id="typing">
+                <span></span><span></span><span></span>
+                <strong>Bot is typing...</strong>
+            </div>
+
+            <div class="quick-actions">
+                <button type="button" onclick="fillPrompt('Tell me about the Hexa Core app features')">Hexa Core Features</button>
+                <button type="button" onclick="fillPrompt('How can this chatbot help me?')">Bot Help</button>
+                <button type="button" onclick="fillPrompt('Give me tips to improve my CV')">CV Tips</button>
+            </div>
+
+            <div class="input-area">
+                <input id="input" placeholder="Ask anything...">
+                <button class="send-btn" onclick="send()">Send</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="chatbot.js"></script>
+</body>
+</html>

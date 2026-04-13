@@ -1,0 +1,2 @@
+<?php
+$OPENROUTER_API_KEY = "Your-OpenRouter-API-Key-Here";

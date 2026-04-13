@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyber-Link: Neon Defense</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
+        /* --- CSS UI & ANIMATIONS --- */
+        :root {
+            --bg-color: #050510;
+            --neon-pink: #ff0055;
+            --neon-blue: #00f3ff;
+            --neon-green: #00ff66;
+        }
+
+        body, html {
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            background-color: var(--bg-color);
+            font-family: 'Share Tech Mono', monospace;
+            overflow: hidden;
+            color: white;
+            user-select: none;
+        }
+
+        /* CRT Scanline Effect */
+        body::after {
+            content: "";
+            position: absolute; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            background-size: 100% 4px, 3px 100%;
+            pointer-events: none; z-index: 100;
+        }
+
+        #game-container {
+            position: relative; width: 100%; height: 100%;
+            display: flex; flex-direction: column; align-items: center;
+        }
+
+        /* 3D Cyberpunk Floor */
+        #floor {
+            position: absolute; bottom: 0; width: 100%; height: 30%;
+            background: 
+                linear-gradient(transparent 0%, var(--neon-pink) 2%, transparent 3%),
+                linear-gradient(90deg, transparent 0%, var(--neon-blue) 2%, transparent 3%);
+            background-size: 50px 50px;
+            transform: perspective(500px) rotateX(60deg);
+            transform-origin: bottom;
+            animation: moveFloor 2s linear infinite;
+            border-top: 2px solid var(--neon-pink);
+            box-shadow: 0 -10px 30px var(--neon-pink);
+            z-index: 1;
+        }
+
+        @keyframes moveFloor {
+            0% { background-position: 0 0; }
+            100% { background-position: 0 50px; }
+        }
+
+        /* UI Overlay */
+        #ui-layer {
+            position: absolute; top: 0; left: 0; width: 100%; padding: 20px;
+            display: flex; justify-content: space-between; box-sizing: border-box;
+            z-index: 10; font-size: 24px; text-shadow: 0 0 10px var(--neon-blue);
+        }
+
+        .stat-box {
+            border: 1px solid var(--neon-blue);
+            padding: 10px 20px; background: rgba(0, 243, 255, 0.1);
+            border-radius: 5px; backdrop-filter: blur(5px);
+        }
+
+        /* The Enemies (Words) */
+        .word {
+            position: absolute; font-size: 28px; font-weight: bold;
+            color: white; text-shadow: 0 0 15px var(--neon-green);
+            transition: color 0.1s; z-index: 5;
+        }
+
+        .word .typed { color: var(--neon-pink); text-shadow: 0 0 15px var(--neon-pink); }
+
+        /* Start Screen */
+        #start-screen {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            background: rgba(5, 5, 16, 0.9); z-index: 50;
+        }
+
+        h1 { font-size: 60px; text-shadow: 0 0 20px var(--neon-pink); margin-bottom: 10px; }
+        button {
+            padding: 15px 40px; font-size: 24px; font-family: 'Share Tech Mono', monospace;
+            background: transparent; color: var(--neon-blue);
+            border: 2px solid var(--neon-blue); box-shadow: 0 0 15px var(--neon-blue) inset;
+            cursor: pointer; transition: 0.3s; margin-top: 20px;
+        }
+        button:hover { background: var(--neon-blue); color: black; box-shadow: 0 0 30px var(--neon-blue); }
+
+        /* Screen Shake Animation */
+        .shake { animation: shake 0.3s cubic-bezier(.36,.07,.19,.97) both; }
+        @keyframes shake {
+            10%, 90% { transform: translate3d(-2px, 2px, 0); }
+            20%, 80% { transform: translate3d(4px, -2px, 0); }
+            30%, 50%, 70% { transform: translate3d(-6px, 4px, 0); }
+            40%, 60% { transform: translate3d(6px, -4px, 0); }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="game-container">
+        <div id="ui-layer">
+            <div class="stat-box">SCORE: <span id="score">0</span></div>
+            <div class="stat-box">LIVES: <span id="lives">3</span></div>
+        </div>
+        <div id="floor"></div>
+    </div>
+
+    <div id="start-screen">
+        <h1>CYBER-LINK</h1>
+        <p>Type the words before they breach the firewall.</p>
+        <button id="start-btn">INITIALIZE</button>
+    </div>
+
+    <script>
+        /* --- JAVASCRIPT BACKEND / LOGIC --- */
+        
+        // Game State Variables
+        let score = 0;
+        let lives = 3;
+        let wordsOnScreen = [];
+        let activeWord = null;
+        let gameLoopId;
+        let spawnIntervalId;
+        let baseSpeed = 1;
+        let spawnRate = 2000; // ms
+        let isPlaying = false;
+
+        // Word Dictionary
+        const dictionary = ["HACK", "NEON", "CYBER", "SYNTH", "MATRIX", "VOID", "PROXY", "ROUTER", "UPLINK", "SYSTEM", "BREACH", "FIREWALL", "KERNEL", "GIBSON", "NODE"];
+
+        // DOM Elements
+        const gameContainer = document.getElementById('game-container');
+        const scoreEl = document.getElementById('score');
+        const livesEl = document.getElementById('lives');
+        const startScreen = document.getElementById('start-screen');
+        const startBtn = document.getElementById('start-btn');
+
+        // --- WEB AUDIO API (Procedural Sounds) ---
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        let audioCtx;
+
+        function initAudio() {
+            if (!audioCtx) audioCtx = new AudioContext();
+        }
+
+        // Zap sound for typing correctly
+        function playZap() {
+            if (!audioCtx) return;
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain); gain.connect(audioCtx.destination);
+            osc.type = 'square';
+            osc.frequency.setValueAtTime(800, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(100, audioCtx.currentTime + 0.1);
+            gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.1);
+            osc.start(); osc.stop(audioCtx.currentTime + 0.1);
+        }
+
+        // Boom sound for taking damage
+        function playBoom() {
+            if (!audioCtx) return;
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain); gain.connect(audioCtx.destination);
+            osc.type = 'sawtooth';
+            osc.frequency.setValueAtTime(100, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(10, audioCtx.currentTime + 0.3);
+            gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.3);
+            osc.start(); osc.stop(audioCtx.currentTime + 0.3);
+        }
+
+        // --- GAME MECHANICS ---
+
+        class WordEntity {
+            constructor() {
+                this.text = dictionary[Math.floor(Math.random() * dictionary.length)];
+                this.typedIndex = 0;
+                this.y = -50;
+                // Keep words within screen bounds
+                this.x = Math.random() * (window.innerWidth - 150) + 20; 
+                this.speed = baseSpeed + (Math.random() * 0.5); // Slight speed variance
+
+                // Create DOM Element
+                this.el = document.createElement('div');
+                this.el.className = 'word';
+                this.el.innerText = this.text;
+                this.el.style.left = `${this.x}px`;
+                this.el.style.top = `${this.y}px`;
+                gameContainer.appendChild(this.el);
+            }
+
+            updateDOM() {
+                // Highlight typed letters in Pink
+                const typedPart = `<span class="typed">${this.text.substring(0, this.typedIndex)}</span>`;
+                const untypedPart = this.text.substring(this.typedIndex);
+                this.el.innerHTML = typedPart + untypedPart;
+            }
+
+            destroy() {
+                this.el.remove();
+            }
+        }
+
+        function spawnWord() {
+            if(!isPlaying) return;
+            wordsOnScreen.push(new WordEntity());
+            // Increase difficulty over time
+            spawnRate = Math.max(500, spawnRate - 50); 
+            baseSpeed += 0.05;
+            clearInterval(spawnIntervalId);
+            spawnIntervalId = setInterval(spawnWord, spawnRate);
+        }
+
+        function updateGame() {
+            if (!isPlaying) return;
+
+            const floorLimit = window.innerHeight * 0.75; // Hit the 3D floor
+
+            for (let i = wordsOnScreen.length - 1; i >= 0; i--) {
+                let wordObj = wordsOnScreen[i];
+                wordObj.y += wordObj.speed;
+                wordObj.el.style.top = `${wordObj.y}px`;
+
+                // Check collision with floor (Damage)
+                if (wordObj.y > floorLimit) {
+                    playBoom();
+                    triggerScreenShake();
+                    loseLife();
+                    wordObj.destroy();
+                    wordsOnScreen.splice(i, 1);
+                    if (activeWord === wordObj) activeWord = null;
+                }
+            }
+
+            gameLoopId = requestAnimationFrame(updateGame);
+        }
+
+        // --- INPUT HANDLING ---
+        window.addEventListener('keydown', (e) => {
+            if (!isPlaying) return;
+            const key = e.key.toUpperCase();
+            
+            // Ignore non-letter keys
+            if (!/^[A-Z]$/.test(key)) return;
+
+            if (activeWord === null) {
+                // Find a word starting with the pressed key
+                // Prioritize the word lowest on the screen
+                let lowestWord = null;
+                let maxDrop = -100;
+
+                for (let wordObj of wordsOnScreen) {
+                    if (wordObj.text[0] === key && wordObj.y > maxDrop) {
+                        lowestWord = wordObj;
+                        maxDrop = wordObj.y;
+                    }
+                }
+
+                if (lowestWord) {
+                    activeWord = lowestWord;
+                    processHit(key);
+                }
+            } else {
+                // Continue typing active word
+                processHit(key);
+            }
+        });
+
+        function processHit(key) {
+            if (activeWord.text[activeWord.typedIndex] === key) {
+                activeWord.typedIndex++;
+                activeWord.updateDOM();
+                playZap();
+
+                // Word fully typed!
+                if (activeWord.typedIndex === activeWord.text.length) {
+                    score += activeWord.text.length * 10;
+                    scoreEl.innerText = score;
+                    activeWord.destroy();
+                    wordsOnScreen = wordsOnScreen.filter(w => w !== activeWord);
+                    activeWord = null;
+                }
+            } else {
+                // Typo - reset progress to punish player
+                activeWord.typedIndex = 0;
+                activeWord.updateDOM();
+                activeWord = null; 
+            }
+        }
+
+        // --- GAME LOOP / STATE MANAGEMENT ---
+
+        function loseLife() {
+            lives--;
+            livesEl.innerText = lives;
+            if (lives <= 0) {
+                gameOver();
+            }
+        }
+
+        function triggerScreenShake() {
+            document.body.classList.remove('shake');
+            void document.body.offsetWidth; // trigger reflow to restart animation
+            document.body.classList.add('shake');
+        }
+
+        function startGame() {
+            initAudio();
+            startScreen.style.display = 'none';
+            score = 0;
+            lives = 3;
+            baseSpeed = 1;
+            spawnRate = 2000;
+            scoreEl.innerText = score;
+            livesEl.innerText = lives;
+            isPlaying = true;
+            activeWord = null;
+
+            // Clear existing words
+            wordsOnScreen.forEach(w => w.destroy());
+            wordsOnScreen = [];
+
+            spawnIntervalId = setInterval(spawnWord, spawnRate);
+            gameLoopId = requestAnimationFrame(updateGame);
+        }
+
+        function gameOver() {
+            isPlaying = false;
+            cancelAnimationFrame(gameLoopId);
+            clearInterval(spawnIntervalId);
+            
+            startScreen.innerHTML = `
+                <h1 style="color:var(--neon-pink); text-shadow:0 0 20px var(--neon-pink);">SYSTEM FAILURE</h1>
+                <p>FINAL SCORE: ${score}</p>
+                <button id="restart-btn">REBOOT SYSTEM</button>
+            `;
+            startScreen.style.display = 'flex';
+            
+            document.getElementById('restart-btn').addEventListener('click', startGame);
+        }
+
+        startBtn.addEventListener('click', startGame);
+
+    </script>
+</body>
+</html>

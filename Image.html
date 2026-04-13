@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Image Generator</title>
+
+<style>
+
+/* ===== THEME VARIABLES ===== */
+:root {
+    --bg: linear-gradient(135deg, #1e1e2f, #3a0ca3, #7209b7);
+    --card: rgba(255,255,255,0.08);
+    --text: #ffffff;
+    --input: rgba(255,255,255,0.1);
+}
+
+body.light {
+    --bg: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+    --card: rgba(255,255,255,0.7);
+    --text: #222;
+    --input: rgba(0,0,0,0.05);
+}
+
+/* ===== GLOBAL ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+    height: 100vh;
+    background: var(--bg);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.4s;
+}
+
+/* ===== THEME TOGGLE BUTTON ===== */
+.theme-toggle {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    cursor: pointer;
+    padding: 10px 15px;
+    border-radius: 12px;
+    background: var(--card);
+    color: var(--text);
+    border: none;
+    font-weight: bold;
+    backdrop-filter: blur(10px);
+    transition: 0.3s;
+}
+
+.theme-toggle:hover {
+    transform: scale(1.1);
+}
+
+/* ===== CONTAINER ===== */
+.container {
+    width: 90%;
+    max-width: 900px;
+    backdrop-filter: blur(20px);
+    background: var(--card);
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+}
+
+/* ===== HEADER ===== */
+.header {
+    text-align: center;
+    color: var(--text);
+    margin-bottom: 25px;
+}
+
+.header h1 {
+    background: linear-gradient(to right, #00f5d4, #9b5de5);
+    -webkit-background-clip: text;
+    color: transparent;
+}
+
+/* ===== INPUT ===== */
+.input-group {
+    display: flex;
+    gap: 10px;
+}
+
+input {
+    flex: 1;
+    padding: 15px;
+    border-radius: 12px;
+    border: none;
+    outline: none;
+    background: var(--input);
+    color: var(--text);
+}
+
+/* ===== BUTTON ===== */
+button.generate-btn {
+    padding: 15px 20px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    background: linear-gradient(135deg, #00f5d4, #9b5de5);
+    color: white;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+button.generate-btn:hover {
+    transform: scale(1.05);
+}
+
+/* ===== CARD ===== */
+.card {
+    margin-top: 20px;
+    padding: 20px;
+    border-radius: 15px;
+    background: var(--card);
+    color: var(--text);
+    text-align: center;
+}
+
+/* ===== IMAGE BOX ===== */
+.image-box {
+    height: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--input);
+    border-radius: 12px;
+    margin-top: 15px;
+    overflow: hidden;
+}
+
+.image-box img {
+    max-width: 100%;
+    border-radius: 10px;
+}
+
+/* ===== SPINNER ===== */
+.spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid rgba(255,255,255,0.2);
+    border-top: 5px solid #00f5d4;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    display: none;
+}
+
+@keyframes spin {
+    100% { transform: rotate(360deg); }
+}
+
+/* ===== PROGRESS ===== */
+.progress-container {
+    margin-top: 15px;
+    height: 10px;
+    background: var(--input);
+    border-radius: 10px;
+    overflow: hidden;
+    display: none;
+}
+
+.progress-bar {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #00f5d4, #9b5de5);
+}
+
+/* ===== DOWNLOAD BUTTON ===== */
+.download-btn {
+    margin-top: 15px;
+    padding: 12px 20px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    background: linear-gradient(135deg, #ff9f1c, #ffbf69);
+    color: black;
+    font-weight: bold;
+    display: none;
+    transition: 0.3s;
+}
+
+.download-btn:hover {
+    transform: scale(1.05);
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- 🌙 THEME BUTTON -->
+<button class="theme-toggle" onclick="toggleTheme()">🌙 / ☀️</button>
+
+<div class="container">
+
+    <div class="header">
+        <h1>✨ AI Image Generator</h1>
+        <p>Turn your imagination into reality</p>
+    </div>
+
+    <div class="input-group">
+        <input type="text" id="prompt" placeholder="Enter your prompt...">
+        <button class="generate-btn" onclick="fakeGenerate()">Generate</button>
+    </div>
+
+    <div class="card">
+        <h3>Generated Image</h3>
+
+        <div class="image-box">
+            <div class="spinner" id="spinner"></div>
+            <img id="output" style="display:none;">
+        </div>
+
+        <div class="progress-container" id="progressContainer">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+
+        <!-- DOWNLOAD BUTTON -->
+        <button class="download-btn" id="downloadBtn" onclick="downloadImage()">⬇ Download</button>
+
+    </div>
+
+</div>
+
+<script>
+
+/* ===== THEME TOGGLE ===== */
+function toggleTheme() {
+    document.body.classList.toggle("light");
+}
+
+async function fakeGenerate() {
+
+    let prompt = document.getElementById("prompt").value.trim();
+    let spinner = document.getElementById("spinner");
+    let img = document.getElementById("output");
+    let progressContainer = document.getElementById("progressContainer");
+    let progressBar = document.getElementById("progressBar");
+    let downloadBtn = document.getElementById("downloadBtn");
+
+    if (!prompt) {
+        alert("Please enter a prompt");
+        return;
+    }
+
+    spinner.style.display = "block";
+    img.style.display = "none";
+    downloadBtn.style.display = "none";
+    progressContainer.style.display = "block";
+    progressBar.style.width = "30%";
+
+    try {
+        let response = await fetch("/generate", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                prompt: prompt
+            })
+        });
+
+        progressBar.style.width = "80%";
+
+        let data = await response.json();
+
+        spinner.style.display = "none";
+
+        if (!response.ok) {
+            throw new Error(data.error || "Image generation failed");
+        }
+
+        img.src = data.image;
+        img.style.display = "block";
+        downloadBtn.style.display = "inline-block";
+        progressBar.style.width = "100%";
+
+    } catch (error) {
+        spinner.style.display = "none";
+        progressContainer.style.display = "none";
+        alert(error.message || "Error generating image");
+        console.error(error);
+    }
+}
+
+/* ===== DOWNLOAD IMAGE ===== */
+function downloadImage() {
+    let img = document.getElementById("output").src;
+
+    let a = document.createElement("a");
+    a.href = img;
+    a.download = "generated-image.png";
+    a.click();
+}
+
+</script>
+
+</body>
+</html>

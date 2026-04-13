@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pro To-Do App</title>
+  <link rel="stylesheet" href="list.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="app">
+  <!-- HEADER -->
+  <header class="header">
+    <div class="logo"><i class="fas fa-rocket"></i> Task Manager</div>
+
+    <div class="search-bar">
+      <i class="fas fa-search"></i>
+      <input type="text" id="searchInput" placeholder="Search tasks...">
+    </div>
+
+    <div class="right-icons">
+      <button onclick="toggleDarkMode()" class="icon-btn" title="Toggle Dark Mode">
+        <i class="fas fa-moon" id="themeIcon"></i>
+      </button>
+
+      <!-- Notifications -->
+      <div class="dropdown">
+        <button onclick="toggleNotifications(event)" class="icon-btn" title="Notifications">
+          <i class="fas fa-bell"></i>
+          <span class="badge" id="notiBadge">0</span>
+        </button>
+        <div id="notificationPanel" class="dropdown-menu"></div>
+      </div>
+
+      <!-- Profile -->
+      <div class="dropdown">
+        <button onclick="toggleProfile(event)" class="profile">MR</button>
+        <div id="profileMenu" class="dropdown-menu">
+          <p onclick="toggleDarkMode()"><i class="fas fa-moon"></i> Toggle Theme</p>
+          <p onclick="clearTasks()"><i class="fas fa-trash-alt"></i> Clear All Tasks</p>
+          <p onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</p>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <div class="container">
+    <!-- TASKS -->
+    <div class="tasks">
+      <div class="tasks-header">
+        <div>
+          <h2>My Tasks (<span id="taskCount">0</span>)</h2>
+          <p class="subtitle" id="dateDisplay">Today</p>
+        </div>
+        <div class="header-actions">
+          <button onclick="clearCompleted()" class="btn-secondary" title="Clear Completed"><i class="fas fa-broom"></i></button>
+          <button id="addBtn" class="add-btn"><i class="fas fa-plus"></i> New Task</button>
+        </div>
+      </div>
+
+      <div id="taskList" class="custom-scrollbar"></div>
+    </div>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+      <div class="progress-card">
+        <h3>Productivity</h3>
+        <div class="circle" id="progressCircle">
+          <div id="progressValue">0%</div>
+        </div>
+        <div class="stats">
+          <p>Total Tasks: <span id="totalTasks" class="stat-num">0</span></p>
+          <p>Completed: <span id="completedTasks" class="stat-num">0</span></p>
+        </div>
+      </div>
+
+      <div class="ai-box">
+        <h4><i class="fas fa-robot"></i> AI Suggestions</h4>
+        <ul id="aiSuggestions"></ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="modal" id="modal">
+  <div class="modal-box">
+    <h2 id="modalTitle">✨ Create New Task</h2>
+
+    <div class="input-group">
+      <input type="text" id="taskTitle" required>
+      <label>Task Title</label>
+    </div>
+
+    <div class="input-group">
+      <input type="date" id="taskDate" required>
+      <label class="active">Due Date</label>
+    </div>
+
+    <div class="input-group">
+      <select id="taskPriority">
+        <option value="low">Low Priority</option>
+        <option value="medium">Medium Priority</option>
+        <option value="high">High Priority</option>
+      </select>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal()">Cancel</button>
+      <button class="btn-save" id="saveTaskBtn" onclick="saveTask()">Save Task</button>
+    </div>
+  </div>
+</div>
+
+<script src="tdo.js" defer></script>
+</body>
+</html>

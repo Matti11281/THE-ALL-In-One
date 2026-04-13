@@ -1,0 +1,465 @@
+/* ---------------- Global Reset & Professional Typography ---------------- */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  /* Premium Abstract Dark Liquid Background (Perfect for Glassmorphism) */
+  background-color: #0f172a;
+  background-image: url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  color: #fff;
+  overflow: hidden;
+}
+
+/* ---------------- 3D Floating Flip Container ---------------- */
+.flip-container {
+  perspective: 2000px; 
+  animation: floatCard 6s ease-in-out infinite;
+}
+
+@keyframes floatCard {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-12px); }
+  100% { transform: translateY(0px); }
+}
+
+.flip-card {
+  width: 440px;
+  height: 660px; /* Increased height so nothing gets cut off */
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 1s cubic-bezier(0.2, 0.8, 0.2, 1.2); 
+}
+
+.flip-card.flip {
+  transform: rotateY(180deg);
+}
+
+.login-side,
+.signup-side {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border-radius: 24px;
+}
+
+/* ---------------- Ultra-Premium Glassmorphism Panels ---------------- */
+.Wrapper,
+.container {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
+  border-left: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  border-radius: 24px;
+  padding: 45px 40px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ---------------- LOGIN SIDE STYLES ---------------- */
+.Wrapper {
+  justify-content: center;
+}
+
+.Wrapper h1 {
+  font-size: 36px;
+  text-align: center;
+  margin-bottom: 35px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  background: linear-gradient(to right, #fff, #a5b4fc);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.Wrapper .input-box {
+  position: relative;
+  width: 100%;
+  margin-bottom: 28px;
+}
+
+/* Premium Form Inputs */
+.input-box input,
+.form-outer form .page .field input,
+.form-outer form .page .field select {
+  width: 100%;
+  padding: 16px 45px 16px 20px;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 12px;
+  font-size: 15px;
+  color: #fff;
+  outline: none;
+  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.2);
+  transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+  color-scheme: dark; /* Forces date picker and dropdowns to match dark UI */
+}
+
+/* Make the calendar icon white so it doesn't look invisible */
+::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+    cursor: pointer;
+}
+
+.input-box input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+  font-weight: 300;
+}
+
+.input-box input:focus,
+.form-outer form .page .field input:focus,
+.form-outer form .page .field select:focus {
+  background: rgba(0, 0, 0, 0.5);
+  border-color: rgba(255, 255, 255, 0.5);
+  border-bottom: 2px solid #00f2fe;
+  box-shadow: 0 10px 25px rgba(0, 242, 254, 0.2), inset 0 2px 5px rgba(0, 0, 0, 0.3);
+  transform: translateY(-2px);
+}
+
+.input-box i {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 18px;
+  color: rgba(255, 255, 255, 0.4);
+  transition: color 0.4s ease;
+}
+
+.input-box input:focus ~ i {
+  color: #00f2fe;
+}
+
+.Wrapper .remember-forgot {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  margin: -10px 0 30px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.remember-forgot label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.remember-forgot input[type="checkbox"] {
+  accent-color: #00f2fe;
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+.remember-forgot a {
+  color: #a5b4fc;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.3s;
+}
+
+.remember-forgot a:hover {
+  color: #00f2fe;
+  text-shadow: 0 0 10px rgba(0, 242, 254, 0.5);
+}
+
+/* ---------------- SIGNUP SIDE STYLES ---------------- */
+.signup-side {
+  transform: rotateY(180deg);
+}
+
+.container header {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 25px;
+  text-align: center;
+  background: linear-gradient(to right, #fff, #a5b4fc);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* -- Animated Progress Bar (Stepper) -- */
+.container .progress-bar {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  margin-bottom: 35px;
+}
+
+.container .progress-bar::before {
+  content: '';
+  position: absolute;
+  top: 40px; 
+  left: 12%;
+  width: 76%;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.15);
+  z-index: 0;
+}
+
+.progress-bar .step {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center; 
+  position: relative;
+  z-index: 1;
+}
+
+.progress-bar .step p {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: rgba(255, 255, 255, 0.4);
+  margin-bottom: 12px;
+  line-height: 1;
+  transition: color 0.4s ease;
+}
+
+.progress-bar .step.active p {
+  color: #00f2fe;
+}
+
+.progress-bar .step .bullet {
+  height: 36px;
+  width: 36px;
+  background: #0f172a;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.5);
+  transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+  position: relative;
+  box-shadow: 0 0 0 4px rgba(15, 23, 42, 0.5);
+}
+
+.progress-bar .step.active .bullet {
+  border-color: #00f2fe;
+  color: #00f2fe;
+  box-shadow: 0 0 0 4px rgba(0, 242, 254, 0.15), 0 0 15px rgba(0, 242, 254, 0.4);
+}
+
+.progress-bar .step.completed .bullet {
+  background: #00f2fe;
+  border-color: #00f2fe;
+  color: transparent;
+}
+
+.progress-bar .step .check {
+  position: absolute;
+  top: 42px; 
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0) rotate(-180deg);
+  font-size: 16px;
+  color: #0f172a; 
+  transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  z-index: 10;
+}
+
+.progress-bar .step.completed .check.active {
+  transform: translate(-50%, -50%) scale(1) rotate(0deg);
+}
+
+/* -- Form Pages Layout -- */
+.container .form-outer {
+  width: 100%;
+  overflow: hidden;
+  flex: 1;
+}
+
+.container .form-outer form {
+  display: flex;
+  width: 400%;
+  height: 100%;
+  transition: margin-left 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.form-outer form .page {
+  width: 25%;
+  padding: 0 5px;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-outer form .page .title {
+  font-size: 18px;
+  color: #fff;
+  font-weight: 600;
+  margin-bottom: 20px;
+  position: relative;
+  padding-bottom: 8px;
+}
+
+.form-outer form .page .title::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 40px;
+  height: 3px;
+  background: linear-gradient(90deg, #00f2fe, #4facfe);
+  border-radius: 3px;
+}
+
+.form-outer form .page .field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.form-outer form .page .field .label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* FIX: Ensure buttons do not stack vertically! */
+.form-outer form .page .field.btns {
+  flex-direction: row; 
+  justify-content: space-between;
+  gap: 15px;
+  margin-top: 10px;
+}
+
+.form-outer form .page .field select {
+  padding-left: 15px;
+}
+
+.form-outer form .page .field select option {
+  background: #1e1b4b;
+  color: #fff;
+}
+
+/* ---------------- Universal Professional Button ---------------- */
+.Wrapper .btn,
+.form-outer form .page .field.btns button,
+.form-outer form .page .field button.next {
+  width: 100%;
+  flex: 1; /* Makes Previous and Next split the space equally */
+  padding: 16px;
+  background: linear-gradient(45deg, #4facfe 0%, #00f2fe 50%, #4facfe 100%);
+  background-size: 200% auto;
+  border: none;
+  border-radius: 12px;
+  font-size: 15px;
+  color: #000;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(0, 242, 254, 0.3);
+  transition: all 0.4s ease;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  overflow: hidden;
+}
+
+.Wrapper .btn:hover,
+.form-outer form .page .field.btns button:hover,
+.form-outer form .page .field button.next:hover {
+  background-position: right center;
+  transform: translateY(-3px);
+  box-shadow: 0 12px 25px rgba(0, 242, 254, 0.5);
+}
+
+.Wrapper .btn:active,
+.form-outer form .page .field.btns button:active,
+.form-outer form .page .field button.next:active {
+  transform: translateY(1px);
+}
+
+/* Secondary Button (Previous) styling */
+.form-outer form .page .field.btns button.prev {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: none;
+}
+
+.form-outer form .page .field.btns button.prev:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* ---------------- Bottom Links ---------------- */
+.Wrapper .register-link,
+form .page p {
+  font-size: 13px;
+  text-align: center;
+  margin-top: 20px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.register-link a,
+form .page p a {
+  color: #00f2fe !important;
+  text-decoration: none;
+  font-weight: 600;
+  margin-left: 5px;
+  transition: all 0.3s ease;
+}
+
+.register-link a:hover,
+form .page p a:hover {
+  text-shadow: 0 0 12px rgba(0, 242, 254, 0.8);
+  letter-spacing: 0.5px;
+}
+
+/* ---------------- Cinematic Loader ---------------- */
+#loader {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  background: rgba(15, 23, 42, 0.7) !important;
+}
+
+.spinner {
+  width: 65px;
+  height: 65px;
+  border: 4px solid rgba(255, 255, 255, 0.1);
+  border-top: 4px solid #00f2fe;
+  border-bottom: 4px solid #4facfe;
+  border-radius: 50%;
+  animation: spin 1s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite, glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes glow {
+  0% { box-shadow: 0 0 10px rgba(0, 242, 254, 0.2), inset 0 0 10px rgba(0, 242, 254, 0.2); }
+  100% { box-shadow: 0 0 30px rgba(0, 242, 254, 0.6), inset 0 0 20px rgba(0, 242, 254, 0.4); }
+}

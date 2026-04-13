@@ -1,0 +1,48 @@
+intent,keywords,response
+app_intro,what is this app;what app is this;tell me about this app;what does this app do;purpose of this app;explain this platform;what is your system;what kind of website is this,"This is a multi-feature web application that includes tools like a weather app, chatbot, CV analyzer, image generator, game, and a to-do list system."
+
+features,what features;what can this app do;functions of this app;what tools available;modules in this app;what services you provide,"This app includes six main features: Weather App, Chatbot, Cyber-Link Game, Image Generator, CV Analyzer, and a To-Do List."
+
+weather_1,weather app;forecast;temperature;check weather;weather system;how weather works;weather feature,"The Weather App provides real-time weather updates using an external API and displays temperature, conditions, and forecasts."
+
+weather_2,does it show rain;weather accuracy;live weather;weather details;climate info,"Yes, the weather feature shows live weather details including temperature, humidity, and conditions."
+
+chatbot_1,what is jarvis;who are you;chatbot info;ai assistant;what can you do;your purpose,"I am Jarvis, your AI assistant designed to help you understand and use this application effectively."
+
+chatbot_2,how chatbot works;ai working;how you answer;chatbot logic,"I use a combination of predefined responses and AI to answer your questions efficiently."
+
+game_1,game info;cyber game;neon defense;typing game;play game;game feature,"Cyber-Link: Neon Defense is a cyberpunk typing game where your typing speed and accuracy help you win."
+
+game_2,how to play game;game rules;game controls;typing challenge,"You play by typing quickly and accurately to defeat enemies in the cyber-themed environment."
+
+image_1,image generator;generate image;ai image;create image;diffuser;image ai,"The Image Generator uses Python Diffusers to create AI-generated images from your prompts."
+
+image_2,how image generator works;ai image creation;image feature details,"It takes your text input and generates realistic or creative images using AI models."
+
+cv_1,cv analyzer;resume check;ats score;cv review;resume analysis,"The CV Analyzer evaluates your resume, gives a score, suggests improvements, and predicts job roles."
+
+cv_2,job suggestion;resume mistakes;cv feedback;ats system,"It helps identify missing skills, keyword gaps, and suggests ways to improve your resume."
+
+todo_1,todo app;task manager;task list;manage tasks;todo feature,"The To-Do List helps you organize and manage your daily tasks efficiently."
+
+todo_2,how todo works;add task;task tracking;task system,"You can add, complete, and manage tasks easily within the app."
+
+login_1,login system;signup;otp login;account system;authentication,"The app uses OTP-based login/signup connected to a secure PHP/MySQL backend."
+
+login_2,is login secure;otp verification;account safety;security login,"Yes, OTP verification ensures secure authentication for users."
+
+pages,about page;contact page;logout;info page;website pages,"The app includes About Us, Contact Us, and Logout features for user convenience."
+
+developer,who made this;developer info;creator of app;who built this,"This application is developed as a multi-feature project demonstrating modern web and AI capabilities."
+
+tech_stack,technology used;what tech used;programming languages;tools used,"This app uses HTML, CSS, JavaScript, Python, Flask, and MySQL."
+
+performance,is this fast;app speed;performance;response time,"The app is optimized for fast responses using both local logic and AI when needed."
+
+ai_usage,do you use ai;ai features;ai system;machine learning,"Yes, AI is used in chatbot responses, CV analysis, and image generation."
+
+storage,data saved;history;chat saved;storage system,"Your chat history and interactions are saved locally for better experience."
+
+limits,limitations;what you cant do;restrictions,"I can assist with app-related queries and general questions, but I may not handle highly specialized tasks."
+
+future,updates;future features;improvements;upcoming features,"The app can be expanded with more AI features, better accuracy, and additional tools."

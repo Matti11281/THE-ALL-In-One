@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>The Hexa Core</title>
+    <link rel="stylesheet" href="vis.css">
+</head>
+<body style="background:url('image.png')">
+<nav>
+    <ul>
+        <button onclick="location.href='Cont.html'">Contact</button>
+        <button onclick="location.href='Abt.html'">About Me</button>
+        <button onclick="logout()">Logout</button>
+    </ul>
+</nav>
+<div class="container">
+    <!-- Card 1 - Weather -->
+    <div class="parent card1">
+        <div class="card">
+            <div class="content-box">
+                <h1 class="card-title">Weather</h1>
+                <p class="card-description">From here you can get your weather updates</p>
+                <button class="card-button" onclick="location.href='Weat.html'">Weather</button>
+            </div>
+            <div class="date-box">
+                <span class="month">Card</span>
+                <span class="date">01</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Card 2 - Chat Bot -->
+    <div class="parent card2">
+        <div class="card">
+            <div class="content-box">
+                <h1 class="card-title">Chat Bot</h1>
+                <p class="card-description">From here you can talk to chat bot. My chatbot will assist you</p>
+                <button class="card-button" onclick="location.href='chat.html'">Talk With Me</button>
+            </div>
+            <div class="date-box">
+                <span class="month">Card</span>
+                <span class="date">02</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Card 3 - Play Music -->
+    <div class="parent card3">
+        <div class="card">
+            <div class="content-box">
+                <h1 class="card-title">Play Game</h1>
+                <p class="card-description">From here you can Play your Game</p>
+                <button class="card-button" onclick="location.href='game.html'">Play Game</button>
+            </div>
+            <div class="date-box">
+                <span class="month">Card</span>
+                <span class="date">03</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Card 4 - image generation -->
+    <div class="parent card4">
+        <div class="card">
+            <div class="content-box">
+                <h1 class="card-title">Generate Image</h1>
+                <p class="card-description">From here you can generate any image from Text</p>
+                <button class="card-button" onclick="location.href='start_generator.php'">Generate</button>
+            </div>
+            <div class="date-box">
+                <span class="month">Card</span>
+                <span class="date">04</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Card 5 - Cv Maker -->
+    <div class="parent card5">
+        <div class="card">
+            <div class="content-box">
+                <h1 class="card-title">Analyse Your CV</h1>
+                <p class="card-description">From here you can correct your CV and make it more professional</p>
+                <button class="card-button" onclick="location.href='cv_analyser.php'">Check Now</button>
+            </div>
+            <div class="date-box">
+                <span class="month">Card</span>
+                <span class="date">05</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Card 6 - To Do List -->
+    <div class="parent card6">
+        <div class="card">
+            <div class="content-box">
+                <h1 class="card-title">To Do List</h1>
+                <p class="card-description">From here you can remember your every daily task</p>
+                <button class="card-button" onclick="location.href='to-do.html'">Mark Your Progress</button>
+            </div>
+            <div class="date-box">
+                <span class="month">Card</span>
+                <span class="date">06</span>
+            </div>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>
+<script src="Jarvis.js"></script>
